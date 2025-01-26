@@ -197,14 +197,37 @@ async def start_command(client: Client, message: Message):
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(client: Client, message: Message):
     buttons = []
-    
-    # Temporarily skip the subscription checks
-    buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
-    buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
-    buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
-    buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
 
-    # Send message with static buttons to confirm functionality without subscription checks
+    try:
+        # Check if the user is subscribed to Channel 1
+        if not await is_subscribed1(None, client, message):
+            buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
+
+        # Check if the user is subscribed to Channel 2
+        if not await is_subscribed2(None, client, message):
+            buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
+
+        # Check if the user is subscribed to Channel 3
+        if not await is_subscribed3(None, client, message):
+            buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
+
+        # Check if the user is subscribed to Channel 4
+        if not await is_subscribed4(None, client, message):
+            buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
+
+        # Add a custom button to link back to the start on a separate line
+        buttons.append(
+            [InlineKeyboardButton(
+                text='• ɴᴏᴡ ᴄʟɪᴄᴋ ʜᴇʀᴇ •',
+                url=f"https://t.me/{client.username}?start={message.command[1]}"
+            )]
+        )
+
+    except Exception as e:
+        # Catch any exception and log it
+        print(f"Error: {str(e)}")
+
+    # Send message with dynamic buttons
     await message.reply_photo(
         photo=FORCE_PIC,
         caption=FORCE_MSG.format(
@@ -216,7 +239,6 @@ async def not_joined(client: Client, message: Message):
         ),
         reply_markup=InlineKeyboardMarkup(buttons)
     )
-
 
 #=====================================================================================##
 
