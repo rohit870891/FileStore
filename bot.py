@@ -23,11 +23,12 @@ class Bot(Client):
             bot_token=TG_BOT_TOKEN
         )
         self.LOGGER = LOGGER
-
-    async def start(self):
-        await super().start()
+     
+    async def start(self, *args, **kwargs):  # Accept additional arguments
+        await super().start(*args, **kwargs)  # Pass them to the parent start()
         usr_bot_me = await self.get_me()
         self.uptime = datetime.now()
+        print('Bot Started Powered By @Codeflix_Bots')
 
         if FORCE_SUB_CHANNEL1:
             try:
