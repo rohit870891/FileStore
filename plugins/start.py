@@ -14,6 +14,8 @@ from pyrogram.enums import ParseMode
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated, UserNotParticipant
+from pyrogram.errors import FloodWait
+from pyrogram.enums import ChatMemberStatus
 from bot import Bot
 from config import *
 from helper_func import *
@@ -189,47 +191,54 @@ async def start_command(client: Client, message: Message):
 # Don't Remove Credit @CodeFlix_Bots, @rohit_1888
 # Ask Doubt on telegram @CodeflixSupport
 
+
+
+
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(client: Client, message: Message):
     buttons = []
 
-    # Dynamically append each button individually on a separate line
+    # Check if the user is subscribed to Channel 1
+    if not await is_subscribed1(None, client, message):
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1 •", url=client.invitelink1)])
+
+    # Check if the user is subscribed to Channel 2
+    if not await is_subscribed2(None, client, message):
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2 •", url=client.invitelink2)])
+
+    # Check if the user is subscribed to Channel 3
+    if not await is_subscribed3(None, client, message):
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3 •", url=client.invitelink3)])
+
+    # Check if the user is subscribed to Channel 4
+    if not await is_subscribed4(None, client, message):
+        buttons.append([InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4 •", url=client.invitelink4)])
+
+    # Add a custom button to link back to the start on a separate line
+    buttons.append(
+        [InlineKeyboardButton(
+            text='• ɴᴏᴡ ᴄʟɪᴄᴋ ʜᴇʀᴇ •',
+            url=f"https://t.me/{client.username}?start={message.command[1]}"
+        )]
+    )
+
+    # Handle rate-limiting exception
     try:
-        buttons.append(
-            [InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ •", url=client.invitelink1)]
+        # Send message with photo and dynamic buttons
+        await message.reply_photo(
+            photo=FORCE_PIC,
+            caption=FORCE_MSG.format(
+                first=message.from_user.first_name,
+                last=message.from_user.last_name,
+                username=None if not message.from_user.username else '@' + message.from_user.username,
+                mention=message.from_user.mention,
+                id=message.from_user.id
+            ),
+            reply_markup=InlineKeyboardMarkup(buttons)
         )
-        buttons.append(
-            [InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ •", url=client.invitelink2)]
-        )
-        buttons.append(
-            [InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ •", url=client.invitelink3)]
-        )
-        buttons.append(
-            [InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ •", url=client.invitelink4)]
-        )
-
-        # Add a custom button to link back to the start on a separate line
-        buttons.append(
-            [InlineKeyboardButton(
-                text='• ɴᴏᴡ ᴄʟɪᴄᴋ ʜᴇʀᴇ •',
-                url=f"https://t.me/{client.username}?start={message.command[1]}"
-            )]
-        )
-    except IndexError:
-        pass
-
-    await message.reply_photo(
-        photo=FORCE_PIC,
-        caption=FORCE_MSG.format(
-        first=message.from_user.first_name,
-        last=message.from_user.last_name,
-        username=None if not message.from_user.username else '@' + message.from_user.username,
-        mention=message.from_user.mention,
-        id=message.from_user.id
-    ),
-    reply_markup=InlineKeyboardMarkup(buttons)#,
-    #message_effect_id=5104841245755180586  # Add the effect ID here
-)
+    except FloodWait as e:
+        await message.reply("You are being rate-limited, please try again later.")
+        return
 
 
 #=====================================================================================##
