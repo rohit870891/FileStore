@@ -1,19 +1,14 @@
+
 from aiohttp import web
 from plugins import web_server
-import asyncio
+
 import pyromod.listen
 from pyrogram import Client
 from pyrogram.enums import ParseMode
 import sys
 from datetime import datetime
-#rohit_1888 on Tg
+
 from config import *
-
-
-name ="""
- BY CODEFLIX BOTS
-"""
-
 
 class Bot(Client):
     def __init__(self):
@@ -40,12 +35,12 @@ class Bot(Client):
                 if not link:
                     await self.export_chat_invite_link(FORCE_SUB_CHANNEL1)
                     link = (await self.get_chat(FORCE_SUB_CHANNEL1)).invite_link
-                self.invitelink1 = link
+                self.invitelink = link
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
                 self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL1 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL1}")
-                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
         if FORCE_SUB_CHANNEL2:
             try:
@@ -58,7 +53,7 @@ class Bot(Client):
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
                 self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL2 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL2}")
-                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
         if FORCE_SUB_CHANNEL3:
             try:
@@ -71,7 +66,7 @@ class Bot(Client):
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
                 self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL3 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL3}")
-                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
         if FORCE_SUB_CHANNEL4:
             try:
@@ -84,7 +79,7 @@ class Bot(Client):
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
                 self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL4 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL4}")
-                self.LOGGER(__name__).info("\nBot Stopped. https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
         try:
             db_channel = await self.get_chat(CHANNEL_ID)
@@ -98,7 +93,7 @@ class Bot(Client):
             sys.exit()
 
         self.set_parse_mode(ParseMode.HTML)
-        self.LOGGER(__name__).info(f"Bot Running..!\n\nCreated by \nhttps://t.me/weebs_support")
+        self.LOGGER(__name__).info(f"Bot Running..!\n\nCreated by \nhttps://t.me/codeflix_bots")
         self.LOGGER(__name__).info(f"""       
 
 
@@ -109,34 +104,13 @@ class Bot(Client):
                                                          
  
                                           """)
-
-        self.set_parse_mode(ParseMode.HTML)
         self.username = usr_bot_me.username
-        self.LOGGER(__name__).info(f"Bot Running..! Made by @Codeflix_Bots")   
-
-        # Start Web Server
+        #web-response
         app = web.AppRunner(await web_server())
         await app.setup()
-        await web.TCPSite(app, "0.0.0.0", PORT).start()
-
-
-        try: await self.send_message(OWNER_ID, text = f"<b><blockquote>🤖 Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ by @Codeflix_Bots</blockquote></b>")
-        except: pass
+        bind_address = "0.0.0.0"
+        await web.TCPSite(app, bind_address, PORT).start()
 
     async def stop(self, *args):
         await super().stop()
         self.LOGGER(__name__).info("Bot stopped.")
-
-    def run(self):
-        """Run the bot."""
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.start())
-        self.LOGGER(__name__).info("Bot is now running. Thanks to @rohit_1888")
-        try:
-            loop.run_forever()
-        except KeyboardInterrupt:
-            self.LOGGER(__name__).info("Shutting down...")
-        finally:
-            loop.run_until_complete(self.stop())
-
-     #@rohit_1888 on Tg
