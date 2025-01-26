@@ -193,27 +193,27 @@ async def start_command(client: Client, message: Message):
 async def not_joined(client: Client, message: Message):
     buttons = []
 
-    # Dynamically append each button individually
+    # Dynamically append each button individually on a separate line
     try:
         buttons.append(
-            InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1", url=client.invitelink1)
+            [InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 1", url=client.invitelink1)]
         )
         buttons.append(
-            InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2", url=client.invitelink2)
+            [InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 2", url=client.invitelink2)]
         )
         buttons.append(
-            InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3", url=client.invitelink3)
+            [InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 3", url=client.invitelink3)]
         )
         buttons.append(
-            InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4", url=client.invitelink4)
+            [InlineKeyboardButton(text="• ᴊᴏɪɴ ᴄʜᴀɴɴᴇʟ 4", url=client.invitelink4)]
         )
 
-        # Add a custom button to link back to the start
+        # Add a custom button to link back to the start on a separate line
         buttons.append(
-            InlineKeyboardButton(
+            [InlineKeyboardButton(
                 text='• ɴᴏᴡ ᴄʟɪᴄᴋ ʜᴇʀᴇ •',
                 url=f"https://t.me/{client.username}?start={message.command[1]}"
-            )
+            )]
         )
     except IndexError:
         pass
