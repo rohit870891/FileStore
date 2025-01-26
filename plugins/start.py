@@ -194,10 +194,10 @@ async def not_joined(client: Client, message: Message):
     user_id = message.from_user.id
 
     # Check subscription status
-    sub1 = await is_subscribed1(update, client, filter)
-    sub2 = await is_subscribed2(update, client, filter)
-    sub3 = await is_subscribed3(update, client, filter)
-    sub4 = await is_subscribed4(update, client, filter)
+    sub1 = await is_subscribed1(None, client, filter)
+    sub2 = await is_subscribed2(None, client, filter)
+    sub3 = await is_subscribed3(None, client, filter)
+    sub4 = await is_subscribed4(None, client, filter)
 
     buttons = []
 
