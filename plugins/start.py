@@ -218,8 +218,6 @@ async def not_joined(client: Client, message: Message):
     except IndexError:
         pass
 
-    # Send message with the buttons
-    await message.reply("Please join the channels!", reply_markup=InlineKeyboardMarkup([buttons]))
     await message.reply_photo(
         photo=FORCE_PIC,
         caption=FORCE_MSG.format(
